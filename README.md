@@ -1,27 +1,33 @@
-# terraform-external-urlparse
+# terraform-external-pyurlparse
+#
 
+This a python fork of https://github.com/matti/terraform-external-urlparse,
+which depends on python rather than ruby.
+
+The main motivation for this fork is that I already manage a number
+of python stacks, and this means I don't need to add a build dependency
+on ruby 
+
+Examples of use:
 ```
 module "test" {
-  source = "matti/urlparse/external"
-
+  source = "rgammans/pyurlparse/external"
   url = "http://user:pass@www.example.com:8080/path?query1=1&query2=2#frag"
-  # url = "postgres://user:pass@postgres:5432/db"
 }
 ```
-
+which has tf outputs:
 ```
-Outputs:
+Outputs: (as per urllib.parse.urlparse )
 
 fragment = frag
-host = www.example.com
 password = pass
 path = /path
-port = 8080
 query = query1=1&query2=2
 scheme = http
-user = user
+username = user 
+password = pass, 
+hostname = www.example.com
+port = 8080
+netloc= user:pass@www.example.com:8080
+
 ```
-
-NOTE: has ruby dependency - it would be possible to write it without it with regex like:
-
-    regex("^(?:(?P<scheme>[^:/?#]+):)?(?://(?P<authority>[^/?#]*))?", "https://terraform.io/docs/")
