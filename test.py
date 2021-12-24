@@ -21,7 +21,12 @@ class TerraformTestCase(unittest.TestCase):
             ["terraform","output","-json"],
              stdout=subprocess.PIPE
         )
-        return json.loads(str(proc.stdout,'utf8'))
+        datastr = str(proc.stdout,'utf8')
+        try:
+            return json.loads(datastr)
+        except json.decoder.JSONDecodeError:
+            print (f"JSONDecode failed: {datastr!r}")
+            raise
 
 
     @unittest.expectedFailure
